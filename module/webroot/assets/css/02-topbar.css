@@ -1,0 +1,96 @@
+/* FileHider WebUI: sticky top bar, status pill, and overflow menu. */
+  .topbar {
+    position: sticky; top: 0; z-index: 30;
+    padding-top: env(safe-area-inset-top);
+    background: var(--topbar);
+    border-bottom: 1px solid var(--line);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    backdrop-filter: blur(18px) saturate(1.2);
+  }
+  .topbar-inner {
+    width: min(780px, 100%);
+    margin: 0 auto;
+    min-height: 68px;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+    position: relative;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .brand-copy { min-width: 0; }
+  .logo {
+    width: 42px; height: 42px; flex: none; display: grid; place-items: center;
+    color: #eafff7;
+    background: linear-gradient(145deg, #1b8b63 0%, #0d3a2b 60%, #092117 100%);
+    border: 1px solid rgba(169, 255, 219, .26);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(20, 184, 116, .22), inset 0 1px 0 rgba(255,255,255,.16);
+  }
+  .logo .icon { width: 23px; height: 23px; }
+  .brand h1 {
+    font-size: 19px; letter-spacing: -.02em; line-height: 1.15;
+    margin: 0; font-weight: 720; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sub {
+    margin-top: 3px; color: var(--muted); font-size: 13px; line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .top-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; position: relative; }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line);
+    background: var(--surface-2); color: var(--text); display: grid; place-items: center;
+    cursor: pointer; padding: 0; flex: none;
+    transition: background .18s ease, border-color .18s ease, transform .12s ease;
+  }
+  .icon-btn:hover { background: var(--surface-3); border-color: var(--line-strong); }
+  .icon-btn:active { transform: scale(.96); }
+  .icon-btn[hidden] { display: none !important; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 10px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--surface-2); color: var(--muted); font-size: 12px; font-weight: 600;
+    white-space: nowrap; line-height: 1;
+  }
+  .pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted-2); flex: none; }
+  .pill.ok { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); }
+  .pill.ok .dot { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-ring); animation: pulse 2.2s infinite; }
+  .pill.warn { color: var(--warn); border-color: var(--warn-line); background: var(--warn-soft); }
+  .pill.warn .dot { background: var(--warn); }
+  .pill.bad { color: var(--danger); border-color: var(--danger-line); background: var(--danger-soft); }
+  .pill.bad .dot { background: var(--danger); }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 var(--accent-ring); } 50% { box-shadow: 0 0 0 5px transparent; } }
+
+  .menu {
+    position: absolute; top: calc(100% + 8px); right: 0; z-index: 60;
+    width: 238px; padding: 7px; border-radius: 17px;
+    background: var(--menu); border: 1px solid var(--line-strong);
+    box-shadow: var(--shadow);
+    -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  }
+  .menu button {
+    width: 100%; border: 0; background: transparent; color: var(--text);
+    display: flex; align-items: center; gap: 10px; padding: 11px 10px;
+    border-radius: 11px; text-align: left; cursor: pointer; font-size: 15px;
+  }
+  .menu button:hover { background: var(--surface-3); }
+  .menu button .icon { color: var(--muted); }
+  .menu .menu-check {
+    width: 18px; height: 18px; display: grid; place-items: center;
+    color: var(--accent-ink); background: var(--accent); border: 1.5px solid var(--accent);
+    border-radius: 5px; font-size: 12px; font-weight: 800; flex: none;
+    transition: background .16s ease, border-color .16s ease, color .16s ease;
+  }
+  .menu .menu-check.off {
+    color: transparent; background: var(--surface-2); border-color: var(--line-strong);
+  }
+  .menu .sep { height: 1px; background: var(--line); margin: 5px 8px; }
+
+  [data-theme="light"] .topbar,
+  [data-theme="light"] .menu {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  [data-theme="light"] .logo {
+    background: linear-gradient(145deg, #25b583 0%, #107a59 62%, #0b5a43 100%);
+    border-color: rgba(4, 120, 87, .22);
+    box-shadow: 0 8px 22px rgba(16, 185, 129, .18), inset 0 1px 0 rgba(255, 255, 255, .18);
+  }

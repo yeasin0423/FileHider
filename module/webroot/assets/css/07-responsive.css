@@ -1,0 +1,30 @@
+/* FileHider WebUI: responsive and reduced-motion overrides. */
+  @media (min-width: 620px) {
+    .preset-items { grid-template-columns: 1fr 1fr; }
+    .app-shell { padding-top: 24px; }
+    .page-heading h2 { font-size: 27px; }
+  }
+  @media (max-width: 430px) {
+    .topbar-inner { min-height: 64px; padding: 9px 12px; gap: 8px; }
+    .logo { width: 38px; height: 38px; border-radius: 12px; }
+    .brand h1 { font-size: 17px; }
+    .sub { font-size: 12px; }
+    .pill { padding: 6px 8px; font-size: 11px; }
+    .top-actions { gap: 6px; }
+    .icon-btn { width: 37px; height: 37px; }
+    .app-shell { padding-left: 11px; padding-right: 11px; }
+    .app-row { padding: 9px 9px; gap: 9px; border-radius: 16px; }
+    .avatar { width: 43px; height: 43px; }
+    .app-name { font-size: 14.5px; }
+    .app-pkg { font-size: 11px; }
+    .detail-hero { padding: 12px; gap: 10px; }
+    .detail-name { font-size: 19px; }
+    .detail-actions { gap: 7px; padding: 9px; }
+    .detail-actions .btn { min-height: 48px; padding: 10px 9px; font-size: 14px; }
+    .detail-actions .save-copy { display: none; }
+    .detail-actions .btn.primary { flex: 1; }
+    .preset .preset-note { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  }

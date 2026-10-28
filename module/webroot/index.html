@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-accent="mint" data-icon-shape="circle">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="only dark">
+<meta name="theme-color" content="#070b10">
+<link rel="icon" href="data:,">
+<title>File Hider</title>
+<link rel="stylesheet" href="assets/css/00-tokens.css?v=3.0">
+<link rel="stylesheet" href="assets/css/01-base.css?v=3.0">
+<link rel="stylesheet" href="assets/css/02-topbar.css?v=3.0">
+<link rel="stylesheet" href="assets/css/03-layout.css?v=3.0">
+<link rel="stylesheet" href="assets/css/04-detail.css?v=3.0">
+<link rel="stylesheet" href="assets/css/05-settings-help.css?v=3.0">
+<link rel="stylesheet" href="assets/css/06-sheets.css?v=3.0">
+<link rel="stylesheet" href="assets/css/07-responsive.css?v=3.0">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button id="backBtn" class="icon-btn" type="button" aria-label="Go back" title="Go back">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4.5 7.5A2.5 2.5 0 0 1 7 5h3.2l1.6 2H17a2.5 2.5 0 0 1 2.5 2.5v6.7A2.8 2.8 0 0 1 16.7 19H7.3a2.8 2.8 0 0 1-2.8-2.8V7.5z"/><path d="M8 13h8M8 16h5"/></svg>
+      </div>
+      <div class="brand-copy">
+        <h1 id="viewTitle">File Hider</h1>
+        <div id="viewSub" class="sub">Per-app path hiding</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div id="statusPill" class="pill"><span class="dot"></span><span id="statusText">Connecting</span></div>
+      <button id="menuBtn" class="icon-btn" type="button" aria-label="More options" aria-expanded="false">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.4" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="18.6" r="1.2" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <div id="overflowMenu" class="menu" hidden role="menu" aria-label="More options">
+        <button id="menuSystem" type="button" data-menu="system" role="menuitemcheckbox" aria-checked="false"><span class="menu-check" id="menuSystemCheck">✓</span><span>Show system apps</span></button>
+        <div class="sep"></div>
+        <button type="button" data-menu="help" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.4 2.4 0 1 1 3.6 2.1c-.8.5-1.3 1-1.3 2"/><path d="M12 17h.01"/></svg><span>Help &amp; setup</span></button>
+        <button type="button" data-menu="logs" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><path d="M5 6h14M5 10h14M5 14h9M5 18h6"/></svg><span>Diagnostics</span></button>
+        <button type="button" data-menu="settings" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14.2 3h-4.4l-.4 2.5a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2l.4 2.5h4.4l.4-2.5a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg><span>Settings</span></button>
+        <div class="sep"></div>
+        <button type="button" data-menu="reload" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 6.7"/><path d="M20 5v6h-6"/></svg><span>Reload apps &amp; rules</span></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div id="noBridge" class="banner" hidden>
+  <b>No WebUI shell bridge detected.</b>
+  Open this page from the <b>KernelSU</b> or <b>APatch</b> module WebUI.
+  Magisk has no WebUI; edit <code>/data/adb/filehider/targets.conf</code> directly and restart the target app.
+</div>
+
+<main class="app-shell">
+  <section id="homeView" class="view" aria-labelledby="homeHeading">
+    <div class="page-heading">
+      <div class="eyebrow">Per-app control</div>
+      <h2 id="homeHeading">Choose what each app can see</h2>
+      <p>Toggle an app off to keep its paths but disable hiding for it. Tap any app to edit its rule set.</p>
+    </div>
+    <div class="home-tools">
+      <div class="search-wrap">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+        <input id="appSearch" type="search" placeholder="Search app name or package" autocomplete="off" spellcheck="false" aria-label="Search apps">
+      </div>
+      <button id="reloadApps" class="icon-btn" type="button" aria-label="Reload app list" title="Reload app list">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 6.7"/><path d="M20 5v6h-6"/></svg>
+      </button>
+    </div>
+    <div class="home-meta">
+      <span id="appCount" class="count">Loading apps…</span>
+      <span class="spacer"></span>
+      <span id="homeState" class="mini"></span>
+    </div>
+    <div id="appList" class="app-list">
+      <div class="loading"><span class="spinner"></span><span>Reading installed apps…</span></div>
+    </div>
+  </section>
+
+  <section id="detailView" class="view" hidden aria-labelledby="detailName">
+    <div id="detailHero" class="detail-hero">
+      <div id="detailAvatar" class="avatar lg" aria-hidden="true"></div>
+      <div class="detail-copy">
+        <div id="detailName" class="detail-name">App</div>
+        <div id="detailPkg" class="detail-pkg mono"></div>
+        <div id="detailMeta" class="detail-meta"></div>
+      </div>
+      <label class="switch" title="Enable or disable hiding for this app">
+        <input id="detailActive" type="checkbox">
+        <span class="track" aria-hidden="true"></span>
+        <span id="detailActiveLabel" class="switch-label">Active</span>
+      </label>
+    </div>
+
+    <section class="card" aria-labelledby="pathsHeading">
+      <div class="card-head">
+        <div>
+          <h2 id="pathsHeading">Hidden paths</h2>
+          <p class="hint">A folder also hides everything inside it. The app sees these paths as missing.</p>
+        </div>
+        <div class="card-tools">
+          <span id="draftCount" class="badge">0 paths</span>
+          <button id="clearAppRules" class="btn small danger" type="button" title="Remove every saved path and inactive marker for this app">Remove all</button>
+        </div>
+      </div>
+      <div id="draftChips" class="chips"></div>
+      <div class="add-row">
+        <input id="pathInput" type="text" placeholder="/system/build.prop" autocomplete="off" spellcheck="false" aria-label="Absolute path">
+        <button id="addPath" class="btn primary" type="button">Add</button>
+      </div>
+      <div class="path-actions">
+        <button id="browse" class="btn" type="button"><svg class="icon sm" viewBox="0 0 24 24" style="display:inline-block;vertical-align:-4px;margin-right:4px"><path d="M4.5 7.5A2.5 2.5 0 0 1 7 5h3.2l1.6 2H17a2.5 2.5 0 0 1 2.5 2.5v6.7A2.8 2.8 0 0 1 16.7 19H7.3a2.8 2.8 0 0 1-2.8-2.8V7.5z"/></svg>Browse</button>
+        <button id="browseStorage" class="btn" type="button">Internal storage</button>
+      </div>
+      <div id="pathNotice" class="notice" hidden></div>
+    </section>
+
+    <section class="card" aria-labelledby="presetsHeading">
+      <div class="card-head">
+        <div>
+          <h2 id="presetsHeading">Common paths</h2>
+          <p class="hint">Tap a path to add it. Tap a category to expand it; risky paths stay in Advanced.</p>
+        </div>
+      </div>
+      <div id="presetList" class="preset-list"></div>
+    </section>
+
+    <div class="detail-note">
+      <svg class="icon sm" viewBox="0 0 24 24"><path d="M12 3.5 21 20H3L12 3.5z"/><path d="M12 9v4.2"/><path d="M12 17h.01"/></svg>
+      <span>Rules are applied when the app starts. Save, then force-stop the app so the new process sees the change.</span>
+    </div>
+
+    <div class="detail-actions">
+      <div class="save-copy">
+        <div id="detailDirty" class="save-state">All changes saved</div>
+        <div id="detailRuleSummary" class="save-count">0 hidden paths</div>
+      </div>
+      <button id="saveDetail" class="btn" type="button">Save</button>
+      <button id="saveStop" class="btn primary" type="button">Save &amp; force-stop</button>
+    </div>
+  </section>
+
+  <section id="settingsView" class="view" hidden aria-labelledby="settingsHeading">
+    <div class="page-heading">
+      <div class="eyebrow">File Hider</div>
+      <h2 id="settingsHeading">Settings</h2>
+      <p>Appearance, app-list behavior, and configuration maintenance. Everything here stays offline.</p>
+    </div>
+
+    <section class="card settings-section">
+      <h3>Appearance</h3>
+      <p class="section-sub">CSS-only theme. True Material You / Monet colors are not exposed to the WebView.</p>
+      <div class="setting-row">
+        <div class="setting-copy"><b>Theme</b><span>Follow the system or pin a mode.</span></div>
+        <div id="themeChoices" class="segmented" role="group" aria-label="Theme">
+          <button type="button" data-theme-choice="auto">Auto</button>
+          <button type="button" data-theme-choice="dark">Dark</button>
+          <button type="button" data-theme-choice="light">Light</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-copy"><b>Accent</b><span>Used for active states and primary actions.</span></div>
+        <div id="accentChoices" class="accent-row" role="group" aria-label="Accent color">
+          <button type="button" class="accent-swatch" data-accent-choice="mint" style="--swatch:#6ee7b7" aria-label="Mint"></button>
+          <button type="button" class="accent-swatch" data-accent-choice="blue" style="--swatch:#7dd3fc" aria-label="Blue"></button>
+          <button type="button" class="accent-swatch" data-accent-choice="violet" style="--swatch:#c4b5fd" aria-label="Violet"></button>
+          <button type="button" class="accent-swatch" data-accent-choice="amber" style="--swatch:#fcd34d" aria-label="Amber"></button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-copy"><b>App icon shape</b><span>Circle is the default. Choose the mask used for app avatars.</span></div>
+        <div id="iconShapeChoices" class="segmented" role="group" aria-label="App icon shape">
+          <button type="button" data-icon-shape-choice="circle">Circle</button>
+          <button type="button" data-icon-shape-choice="squircle">Squircle</button>
+          <button type="button" data-icon-shape-choice="rounded">Rounded</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-copy"><b>Reset appearance</b><span>Return to Auto theme, Mint accent, circle icons, and default list filters.</span></div>
+        <button id="resetAppearance" class="btn small" type="button">Reset</button>
+      </div>
+    </section>
+
+    <section class="card settings-section">
+      <h3>App list</h3>
+      <p class="section-sub">Configured system apps stay visible even when system apps are hidden, so you can always manage them.</p>
+      <div class="setting-row">
+        <div class="setting-copy"><b>Show system apps</b><span>Include packages that ship with the ROM.</span></div>
+        <label class="switch">
+          <input id="settingsShowSystem" type="checkbox">
+          <span class="track" aria-hidden="true"></span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-copy"><b>Reload app list</b><span>Read packages again without reloading the page.</span></div>
+        <button id="settingsReloadApps" class="btn small" type="button">Reload</button>
+      </div>
+    </section>
+
+    <section class="card settings-section">
+      <h3>Configuration</h3>
+      <p class="section-sub">The native module reads one file. The WebUI writes it atomically and verifies the byte count.</p>
+      <div class="config-actions">
+        <button id="exportConfig" class="btn small" type="button">Copy config</button>
+        <button id="exportConfigFile" class="btn small tool" type="button">Export file</button>
+        <button id="importConfig" class="btn small" type="button">Import config</button>
+        <button id="reloadConfig" class="btn small" type="button">Reload from disk</button>
+      </div>
+      <div id="settingsConfigPath" class="config-path"></div>
+      <div class="setting-row" style="margin-top:10px">
+        <div class="setting-copy"><b style="color:var(--danger)">Reset all rules</b><span>Backs up the current file to <span class="mono">targets.conf.bak</span>, then clears every app and path.</span></div>
+        <button id="resetRules" class="btn danger small" type="button">Reset</button>
+      </div>
+    </section>
+
+    <section class="card settings-section">
+      <h3>Diagnostics</h3>
+      <div class="setting-row">
+        <div class="setting-copy"><b>On-device logs</b><span>Config, ABI, module files, and the latest FileHider log lines.</span></div>
+        <button id="settingsLogs" class="btn small" type="button">Open</button>
+      </div>
+      <div class="about-grid">
+        <span>Version</span><b id="settingsVersion">—</b>
+        <span>Bridge</span><b id="settingsBridge">—</b>
+        <span>Module</span><b class="mono" style="font-size:10px">filehider</b>
+      </div>
+    </section>
+
+    <section class="card settings-section">
+      <h3>About</h3>
+      <p class="section-sub">File Hider hides selected paths from selected apps only. It never touches <span class="mono">system_server</span>.</p>
+      <p class="hint" style="margin-top:0">App names and icons come from the manager bridge when available; otherwise the package name and a generated monogram are used.</p>
+    </section>
+  </section>
+
+  <section id="helpView" class="view" hidden aria-labelledby="helpHeading">
+    <div class="page-heading">
+      <div class="eyebrow">Guide</div>
+      <h2 id="helpHeading">Help &amp; setup</h2>
+      <p>What File Hider does, how to configure it safely, and what it cannot cover.</p>
+    </div>
+
+    <section class="card help-section">
+      <h3><span class="step-num">1</span> How it works</h3>
+      <p>File Hider is a Zygisk module. When a selected app starts, the module hooks file access in that process only. The app receives <span class="mono">ENOENT</span> for selected paths, and directory listings omit those entries. Other apps keep seeing the real filesystem.</p>
+      <ul>
+        <li>Works across Java, native, <span class="mono">stat</span>/<span class="mono">open</span>/<span class="mono">access</span>, and directory enumeration.</li>
+        <li>Shell children get an exact hidden path rewritten to a missing decoy path.</li>
+        <li>Rules are read when a target process spawns. Restart the app after saving.</li>
+      </ul>
+    </section>
+
+    <section class="card help-section">
+      <h3><span class="step-num">2</span> Add an app</h3>
+      <p>Tap an app on the home screen. Add absolute paths with the input, the file browser, or a common-path preset. Tap <b>Save</b>, then use <b>Save &amp; force-stop</b> or force-stop the app yourself before opening it again.</p>
+      <p>The checkbox on the home screen means <b>active</b>. Turning it off keeps the app's paths in the config but writes an <span class="mono">!package</span> marker, so the native module skips that app. Turn it back on to restore hiding without re-entering paths.</p>
+    </section>
+
+    <section class="card help-section">
+      <h3><span class="step-num">3</span> Choose paths</h3>
+      <p>Use the categories: <b>Integrity</b>, <b>Root traces</b>, <b>Emulator</b>, <b>Native &amp; maps</b>, <b>System libraries</b>, and <b>Other</b>. Tap a category to expand it. Risky presets are inside <b>Advanced</b> and ask for confirmation.</p>
+      <ul>
+        <li><span class="mono">/proc/cpuinfo</span>, <span class="mono">/proc/stat</span>, and build props are usually safe.</li>
+        <li><span class="warn">Danger:</span> hiding <span class="mono">/system/lib</span> or <span class="mono">/system/lib64</span> can stop an app from loading native libraries.</li>
+        <li><span class="warn">Danger:</span> hiding <span class="mono">/proc/self/maps</span> can break ART, profiling, and crash reporting.</li>
+        <li><span class="warn">Danger:</span> hiding <span class="mono">/proc/self/mountinfo</span> can hide real mount checks but may break unrelated probes.</li>
+      </ul>
+    </section>
+
+    <section class="card help-section">
+      <h3><span class="step-num">4</span> Verify</h3>
+      <p>Save the rule, force-stop the app, then open it again. Open <b>Diagnostics</b> and look for <span class="mono">target=</span>, <span class="mono">hooks active</span>, and <span class="mono">first blocked path</span>. If the app still sees the path, it may use a raw syscall, a shell command that builds the path internally, or an unlisted alias.</p>
+      <div class="help-actions">
+        <button class="btn small" type="button" data-open-logs>Open diagnostics</button>
+        <button class="btn small" type="button" data-open-settings>Open settings</button>
+      </div>
+    </section>
+
+    <section class="card help-section">
+      <h3><span class="step-num">5</span> Limitations</h3>
+      <ul>
+        <li>Raw syscalls bypass the libc hooks.</li>
+        <li>Shell children do not inherit hooks; only an exact hidden path in a command or argv is rewritten.</li>
+        <li>Mount namespaces, bind mounts, and paths assembled only inside a child process are not covered.</li>
+        <li>App labels/icons require manager support; otherwise this page falls back to package names and monograms.</li>
+        <li>This is not a universal integrity fix. Use the right tool for mount/namespace-level hiding.</li>
+      </ul>
+    </section>
+  </section>
+</main>
+
+<div id="browserModal" class="modal" role="dialog" aria-modal="true" aria-label="Choose a path">
+  <div class="sheet">
+    <div class="sheet-head">
+      <button class="icon-btn sheet-back" type="button" data-sheet-back="browser" aria-label="Close path browser" title="Close">
+        <svg class="icon sm" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="title">Choose a path</div>
+      <div class="head-actions">
+        <button id="browserUp" class="icon-btn" type="button" title="Go to parent folder" aria-label="Go to parent folder">
+          <svg class="icon sm" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>
+        </button>
+        <button id="closeBrowser" class="icon-btn" type="button" title="Close" aria-label="Close">
+          <svg class="icon sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="add-row" style="margin-top:0;margin-bottom:8px">
+      <input id="jumpInput" type="text" placeholder="/system" autocomplete="off" spellcheck="false" aria-label="Jump to folder">
+      <button id="jump" class="btn tool small" type="button">Go</button>
+    </div>
+    <div id="resolvedPath" class="pathnote mono" hidden></div>
+    <div class="search-wrap" style="margin-bottom:8px">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+      <input id="browserSearch" type="search" placeholder="Filter this folder" autocomplete="off" spellcheck="false" aria-label="Filter this folder">
+    </div>
+    <div id="browserList" class="browser">
+      <div id="browserRows" class="browser-rows"><div class="loading"><span class="spinner"></span><span>Loading…</span></div></div>
+    </div>
+    <p class="hint">Tap a folder to open it. <b>＋</b> adds the entry path; <b>↗</b> resolves a symlink target on demand. Shared storage is read through its root mirror but saved as <span class="mono">/storage/emulated/...</span>.</p>
+    <div class="sheet-actions">
+      <button id="addCurrentDir" class="btn primary" type="button">Add this folder</button>
+      <button id="refreshBrowser" class="btn tool" type="button">Refresh</button>
+    </div>
+  </div>
+</div>
+
+<div id="logsModal" class="modal" role="dialog" aria-modal="true" aria-label="Diagnostics">
+  <div class="sheet">
+    <div class="sheet-head">
+      <button class="icon-btn sheet-back" type="button" data-sheet-back="logs" aria-label="Close diagnostics" title="Close">
+        <svg class="icon sm" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="title">Diagnostics</div>
+      <div class="head-actions">
+        <button id="copyLogs" class="btn small" type="button">Copy</button>
+        <button id="saveLogs" class="btn small" type="button" aria-label="Save logs to Downloads" title="Save logs to Downloads">Save</button>
+        <button id="closeLogs" class="icon-btn" type="button" aria-label="Close"><svg class="icon sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+    </div>
+    <pre id="logOutput" class="logbox">Loading…</pre>
+    <p class="hint">Run the target app first, then refresh. Look for <span class="mono">target=</span>, <span class="mono">hooks active</span>, and <span class="mono">first blocked path</span>.</p>
+    <div class="sheet-actions">
+      <button id="refreshLogs" class="btn primary" type="button">Refresh</button>
+      <button id="stopTargets" class="btn ghost" type="button">Force-stop configured apps</button>
+    </div>
+  </div>
+</div>
+
+<div id="importModal" class="modal" role="dialog" aria-modal="true" aria-label="Import configuration">
+  <div class="sheet">
+    <div class="sheet-head">
+      <button class="icon-btn sheet-back" type="button" data-sheet-back="import" aria-label="Close import" title="Close">
+        <svg class="icon sm" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="title">Import configuration</div>
+      <div class="head-actions">
+        <button id="importCancel" class="icon-btn" type="button" aria-label="Close"><svg class="icon sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:0">Paste a <span class="mono">targets.conf</span> or choose a file from the system picker. Lines starting with <span class="mono">#</span> are ignored. A line <span class="mono">!package</span> keeps that app's paths but makes it inactive. The text is normalized before it is saved.</p>
+    <div class="import-file-row">
+      <button id="chooseImportFile" class="btn tool small" type="button">Choose file…</button>
+      <input id="importFile" type="file" accept=".conf,.txt,text/plain,application/octet-stream" hidden>
+      <span id="importFileStatus" class="hint">Or paste a configuration below.</span>
+    </div>
+    <textarea id="importText" class="logbox" spellcheck="false" placeholder="com.example.detector /system/build.prop&#10;!com.example.other&#10;com.example.other /proc/cpuinfo"></textarea>
+    <div class="sheet-actions">
+      <button id="importApply" class="btn primary" type="button">Import &amp; save</button>
+      <button id="importCancel2" class="btn ghost" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="confirmModal" class="modal confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+  <div class="sheet confirm-sheet">
+    <div class="confirm-head">
+      <div id="confirmIcon" class="confirm-icon" aria-hidden="true">!</div>
+      <div>
+        <div class="confirm-kicker">File Hider</div>
+        <h2 id="confirmTitle">Confirm</h2>
+      </div>
+    </div>
+    <p id="confirmMessage" class="confirm-message"></p>
+    <div class="sheet-actions confirm-actions">
+      <button id="confirmCancel" class="btn ghost" type="button">Cancel</button>
+      <button id="confirmAccept" class="btn danger" type="button">Continue</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+
+<script src="assets/js/00-bootstrap.js?v=3.0" defer></script>
+<script src="assets/js/10-utils.js?v=3.0" defer></script>
+<script src="assets/js/20-config.js?v=3.0" defer></script>
+<script src="assets/js/30-navigation.js?v=3.0" defer></script>
+<script src="assets/js/40-apps.js?v=3.0" defer></script>
+<script src="assets/js/50-detail.js?v=3.0" defer></script>
+<script src="assets/js/60-browser.js?v=3.0" defer></script>
+<script src="assets/js/70-settings.js?v=3.0" defer></script>
+<script src="assets/js/80-events.js?v=3.0" defer></script>
+<script src="assets/js/90-main.js?v=3.0" defer></script>
+</body>
+</html>

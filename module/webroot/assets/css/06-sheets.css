@@ -1,0 +1,114 @@
+/* FileHider WebUI: sheets, file browser, diagnostics, and toast. */
+  .modal {
+    position: fixed; inset: 0; z-index: 70; background: var(--modal-backdrop);
+    display: none; align-items: flex-end; justify-content: center;
+    padding: 0 0 env(safe-area-inset-bottom);
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  }
+  .modal.open { display: flex; }
+  .sheet {
+    width: min(700px, 100%); max-height: 92vh; display: flex; flex-direction: column;
+    padding: 16px; border: 1px solid var(--line-strong);
+    border-radius: 22px 22px 0 0; background: var(--sheet);
+    box-shadow: var(--sheet-shadow);
+    overscroll-behavior: contain;
+    animation: sheet-in .22s ease both;
+  }
+  @keyframes sheet-in { from { transform: translateY(22px); opacity: .55; } to { transform: none; opacity: 1; } }
+  #browserModal .sheet { height: 88vh; max-height: 760px; }
+  .sheet-head { display: flex; align-items: center; gap: 8px; margin-bottom: 11px; flex: none; }
+  .sheet-head .title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-weight: 750; }
+  .sheet-head .head-actions { margin-left: auto; display: flex; align-items: center; gap: 7px; }
+  .sheet-head .icon-btn { width: 35px; height: 35px; border-radius: 10px; }
+  .import-file-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 9px; }
+  .import-file-row .hint { margin: 0; }
+  .pathnote { color: var(--muted); font-size: 12px; margin: -2px 0 9px; word-break: break-all; }
+  .browser {
+    overflow: auto; flex: 1 1 auto; min-height: 0; border-top: 1px solid var(--line);
+    overscroll-behavior: contain; -webkit-overflow-scrolling: touch; position: relative;
+  }
+  .browser-rows { position: relative; width: 100%; min-height: 44px; }
+  .browser .item {
+    position: absolute; left: 0; right: 0; height: 44px;
+    display: flex; align-items: center; gap: 9px; padding: 0 5px;
+    border-bottom: 1px solid var(--line); font-size: 14px; cursor: pointer;
+    contain: layout paint; overflow: hidden;
+  }
+  .browser .item:hover { background: var(--row-hover); }
+  .browser .item .ico { width: 20px; height: 20px; color: var(--muted); flex: none; }
+  .browser .item.dir .ico { color: var(--accent-2); }
+  .browser .item .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .browser .item.dir .name, .browser .item.linkdir .name { color: var(--accent-2); }
+  .browser .item .target { color: var(--muted); font-size: 11px; margin-left: 5px; white-space: nowrap; }
+  .browser .item .add {
+    flex: none; min-width: 29px; height: 29px; padding: 0 7px; font-size: 15px; line-height: 1;
+    color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft);
+    border-radius: 8px; cursor: pointer;
+  }
+  .browser .item .add.target { color: var(--warn); border-color: var(--warn-line); background: var(--warn-soft); }
+  .browser .item .add:active { transform: none; }
+  .browser .empty { padding: 26px 10px; }
+  .sheet-actions { display: flex; gap: 7px; margin-top: 10px; flex: none; flex-wrap: wrap; }
+  .sheet-actions .btn { padding: 10px 12px; }
+  .logbox {
+    flex: 1; min-height: 220px; max-height: 56vh; overflow: auto;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 11px;
+    padding: 11px; margin: 0; font-size: 12px; line-height: 1.5;
+    white-space: pre-wrap; word-break: break-word; color: var(--muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    -webkit-user-select: text; user-select: text; -webkit-touch-callout: default;
+  }
+  .logbox::-webkit-scrollbar, .browser::-webkit-scrollbar { width: 6px; }
+  .logbox::-webkit-scrollbar-thumb, .browser::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 3px; }
+
+  .confirm-modal {
+    z-index: 85; align-items: center; padding: 18px;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+  .confirm-modal .confirm-sheet {
+    width: min(440px, 100%); max-height: 82vh; padding: 18px;
+    border-radius: 20px; border: 1px solid var(--line-strong);
+    animation: confirm-in .18s ease both;
+  }
+  @keyframes confirm-in {
+    from { transform: translateY(10px) scale(.985); opacity: .65; }
+    to { transform: none; opacity: 1; }
+  }
+  .confirm-head { display: flex; align-items: flex-start; gap: 12px; }
+  .confirm-icon {
+    width: 38px; height: 38px; flex: none; display: grid; place-items: center;
+    border-radius: 12px; color: var(--danger);
+    background: var(--danger-soft); border: 1px solid var(--danger-line);
+    font-size: 18px; font-weight: 800; line-height: 1;
+  }
+  .confirm-kicker {
+    color: var(--muted-2); font-size: 11px; font-weight: 750;
+    letter-spacing: .12em; text-transform: uppercase; margin-bottom: 3px;
+  }
+  .confirm-sheet h2 { margin: 0; font-size: 19px; line-height: 1.25; }
+  .confirm-message {
+    margin: 14px 0 0; color: var(--muted); font-size: 14px;
+    line-height: 1.55; white-space: pre-line; overflow-wrap: anywhere;
+  }
+  .confirm-actions { justify-content: flex-end; margin-top: 18px; }
+  .confirm-actions .btn { min-width: 96px; }
+
+  #toast {
+    position: fixed; left: 50%; bottom: calc(88px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 10px); z-index: 90;
+    max-width: min(92vw, 480px); padding: 10px 14px; border-radius: 12px;
+    background: var(--surface-2); border: 1px solid var(--line-strong); color: var(--text);
+    box-shadow: var(--shadow); font-size: 13px; text-align: center; line-height: 1.4;
+    opacity: 0; pointer-events: none; transition: opacity .18s ease, transform .18s ease;
+  }
+  #toast.show { opacity: 1; transform: translate(-50%, 0); }
+  #toast.err { border-color: var(--toast-error-line); background: var(--toast-error-bg); color: var(--toast-error-text); }
+
+  [data-theme="light"] .modal {
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+  [data-theme="light"] .logbox {
+    background: #f7fbfe;
+    color: #3f5369;
+  }

@@ -1,0 +1,18 @@
+# Build and packaging output
+/.toolchain/
+/build/
+/stage/
+/dist/
+*.zip
+
+# Local reports, captures, and backups
+/backups/
+/probe/
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.iml
+*.swp
+.DS_Store
+Thumbs.db

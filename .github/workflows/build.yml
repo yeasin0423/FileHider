@@ -1,0 +1,70 @@
+name: Build FileHider
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            cmake ninja-build g++ zip unzip curl
+
+      - name: Cache Android NDK r30
+        uses: actions/cache@v4
+        with:
+          path: .toolchain/android-ndk
+          key: android-ndk-r30-${{ runner.os }}-${{ hashFiles('scripts/bootstrap-ndk.sh') }}
+          restore-keys: |
+            android-ndk-r30-${{ runner.os }}-
+
+      - name: Run host tests
+        run: ./scripts/test.sh
+
+      - name: Bootstrap NDK
+        run: ./scripts/bootstrap-ndk.sh
+
+      - name: Read module version
+        id: version
+        run: |
+          VERSION="$(sed -n 's/^version=//p' module/module.prop | head -n1)"
+          if [ -z "$VERSION" ]; then
+            echo "Could not read version from module/module.prop" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Building $VERSION"
+
+      - name: Build and verify
+        run: ./scripts/build.sh
+
+      - name: Generate checksums
+        run: |
+          cd dist
+          sha256sum "FileHider-${{ steps.version.outputs.version }}.zip" > SHA256SUMS
+          cat SHA256SUMS
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FileHider-${{ steps.version.outputs.version }}
+          path: |
+            dist/FileHider-${{ steps.version.outputs.version }}.zip
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 30

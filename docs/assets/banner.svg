@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="260" viewBox="0 0 1200 260" role="img" aria-label="FileHider — per-app file hiding for Android">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071018"/>
+      <stop offset="0.55" stop-color="#0a1720"/>
+      <stop offset="1" stop-color="#0b201f"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8ef0c6"/>
+      <stop offset="1" stop-color="#42c8e8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.2" cy="0.1" r="0.8">
+      <stop offset="0" stop-color="#2bd6a0" stop-opacity="0.26"/>
+      <stop offset="0.6" stop-color="#2bd6a0" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#2bd6a0" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#8ef0c6" stroke-opacity="0.055"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="260" rx="30" fill="url(#bg)"/>
+  <rect width="1200" height="260" rx="30" fill="url(#grid)"/>
+  <circle cx="230" cy="28" r="250" fill="url(#glow)"/>
+  <path d="M860 0h340v260H790c78-36 96-88 96-142 0-48-8-84-26-118z" fill="#12302d" opacity="0.28"/>
+
+  <g transform="translate(78 52)">
+    <rect width="156" height="156" rx="42" fill="#0c1a22" stroke="#1d3a43" stroke-width="2"/>
+    <path d="M78 31c17 12 31 15 45 18v28c0 27-17 43-45 52-28-9-45-25-45-52V49c14-3 28-6 45-18z"
+          fill="none" stroke="url(#accent)" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M53 73c0-5 4-9 9-9h12l6 7h17c5 0 9 4 9 9v25c0 5-4 9-9 9H62c-5 0-9-4-9-9V73z"
+          fill="#0c1a22" stroke="url(#accent)" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M66 91h30M66 102h20" fill="none" stroke="#8ef0c6" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+  </g>
+
+  <text x="282" y="112" fill="#f4fbf8" font-family="'Segoe UI', 'SF Pro Display', Arial, sans-serif" font-size="58" font-weight="700" letter-spacing="-1.5">FileHider</text>
+  <text x="284" y="154" fill="#b9d3cd" font-family="'Segoe UI', 'SF Pro Display', Arial, sans-serif" font-size="23" font-weight="400">Per-app file hiding for Android</text>
+  <text x="284" y="192" fill="#72a99c" font-family="'Segoe UI', 'SF Pro Display', Arial, sans-serif" font-size="17" font-weight="500" letter-spacing="1.2">ZYGISK · MAGISK · KERNELSU · APATCH</text>
+
+  <g transform="translate(952 92)">
+    <rect width="166" height="76" rx="20" fill="#0d2528" stroke="#24504a"/>
+    <text x="83" y="31" text-anchor="middle" fill="#8ef0c6" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="1.4">VERSION</text>
+    <text x="83" y="59" text-anchor="middle" fill="#f4fbf8" font-family="'Segoe UI', 'SF Pro Display', Arial, sans-serif" font-size="28" font-weight="700">v3.0</text>
+  </g>
+</svg>

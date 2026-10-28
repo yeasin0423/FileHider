@@ -1,0 +1,33 @@
+/* FileHider WebUI: reset, page background, and icon defaults. */
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: auto; }
+  html, body { margin: 0; padding: 0; }
+  html.overlay-open, body.overlay-open { overflow: hidden !important; overscroll-behavior: none; }
+  body {
+    min-height: 100vh;
+    color: var(--text);
+    background:
+      radial-gradient(900px 480px at 8% -12%, var(--glow-a) 0%, transparent 68%),
+      radial-gradient(760px 520px at 104% -8%, var(--glow-b) 0%, transparent 66%),
+      var(--bg);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    overflow-anchor: none;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,.02), transparent 30%);
+  }
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", monospace;
+    font-variant-ligatures: none;
+  }
+  button, input, textarea { font: inherit; }
+  button { -webkit-user-select: none; user-select: none; }
+  a { color: var(--accent); }
+  .icon { width: 20px; height: 20px; display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .icon.sm { width: 17px; height: 17px; }
+  .icon.lg { width: 24px; height: 24px; }
