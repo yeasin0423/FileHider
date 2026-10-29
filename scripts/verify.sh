@@ -78,8 +78,12 @@ for abi in arm64-v8a armeabi-v7a x86_64 x86; do
 done
 
 echo "==> checking arm64 16 KB page alignment"
-ALIGN="$("${READELF}" -l "${TMP}/arm64-v8a.so" | awk '/LOAD/{print $NF; exit}')"
-[ "${ALIGN}" = "0x4000" ] || fail "arm64 LOAD alignment is ${ALIGN}, expected 0x4000"
+READELF_OUT="$("${READELF}" -lW "${TMP}/arm64-v8a.so")" || \
+    fail "llvm-readelf failed on arm64-v8a.so"
+
+ALIGN="$(printf '%s\n' "${READELF_OUT}" | awk '/LOAD/{print $NF; exit}')"
+[ "${ALIGN}" = "0x4000" ] || \
+    fail "arm64 LOAD alignment is ${ALIGN:-unknown}, expected 0x4000"
 
 echo
 echo "Verified: ${ZIP}"

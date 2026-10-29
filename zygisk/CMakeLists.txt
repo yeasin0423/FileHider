@@ -85,6 +85,7 @@ endif()
 # Android 15+ ships 16 KB page devices. Aligning every ABI is harmless.
 target_link_options(filehider PRIVATE
     -Wl,-z,max-page-size=16384
+    -Wl,-z,common-page-size=16384
     -Wl,--gc-sections
 )
 
