@@ -32,14 +32,14 @@ pip3 install --user cmake ninja
 The output is:
 
 ```text
-dist/FileHider-v3.0.zip
+dist/FileHider-v3.1.zip
 ```
 
 `scripts/build.sh` runs `scripts/verify.sh` automatically. To verify an
 existing archive directly:
 
 ```bash
-./scripts/verify.sh dist/FileHider-v3.0.zip
+./scripts/verify.sh dist/FileHider-v3.1.zip
 ```
 
 The verifier checks:
@@ -101,7 +101,7 @@ It runs the host tests, restores or downloads the pinned NDK, builds all four
 ABIs, verifies the package, and uploads a workflow artifact containing:
 
 ```text
-FileHider-v3.0.zip
+FileHider-v3.1.zip
 SHA256SUMS
 ```
 
@@ -119,9 +119,9 @@ SHA1 5107f898313790e449e87eee2183d9a20602dee9
 To inspect the final archive manually:
 
 ```bash
-unzip -l dist/FileHider-v3.0.zip
-unzip -Z -l dist/FileHider-v3.0.zip | grep service.sh
-sha256sum dist/FileHider-v3.0.zip
+unzip -l dist/FileHider-v3.1.zip
+unzip -Z -l dist/FileHider-v3.1.zip | grep service.sh
+sha256sum dist/FileHider-v3.1.zip
 ```
 
 ## Clean

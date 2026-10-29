@@ -67,7 +67,7 @@ paths as missing. Other apps do not.
 ## Quick start
 
 1. Download the [latest release](https://github.com/yeasin0423/FileHider/releases/latest).
-2. Flash `FileHider-v3.0.zip` in Magisk, KernelSU, or APatch.
+2. Flash `FileHider-v3.1.zip` in Magisk, KernelSU, or APatch.
 3. Reboot once so Zygisk loads the module.
 4. Open the module WebUI (KernelSU/APatch) or edit
    `/data/adb/filehider/targets.conf` on Magisk.
@@ -164,8 +164,8 @@ Magisk has no module WebUI; edit the config file directly.
 - `targets.conf` is intentionally **not** in the zip. Your rules live outside
   the module directory and survive updates.
 - The module description shows a boot-time status such as
-  `[✅ FileHider v3.0 · active · arm64]` or
-  `[❌ FileHider v3.0 · Zygisk not enabled]`.
+  `[✅ FileHider v3.1 · active · arm64]` or
+  `[❌ FileHider v3.1 · Zygisk not enabled]`.
 - If the manager caches the module page, leave and reopen it after boot.
 
 ## Build from source
@@ -181,7 +181,7 @@ No Android Studio or Gradle is needed.
 Output:
 
 ```text
-dist/FileHider-v3.0.zip
+dist/FileHider-v3.1.zip
 ```
 
 Every build runs `scripts/verify.sh`, which checks the zip contents, all four

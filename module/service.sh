@@ -14,7 +14,7 @@
 
 MODDIR=${FILEHIDER_MODDIR:-${0%/*}}
 BASE="$MODDIR/module.prop.bak"
-VERSION="v3.0"
+VERSION="v3.1"
 DEVICE_ABI="unknown"
 STATE="not-working"
 
@@ -145,7 +145,7 @@ init_status() {
         fi
     fi
     VERSION="$(sed -n 's/^version=//p' "$BASE" 2>/dev/null | head -n1)"
-    [ -n "$VERSION" ] || VERSION="v3.0"
+    [ -n "$VERSION" ] || VERSION="v3.1"
     DEVICE_ABI="${FILEHIDER_DEVICE_ABI:-$(device_abi)}"
     lib="$(abi_library "$DEVICE_ABI")"
 

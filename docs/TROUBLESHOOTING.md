@@ -13,7 +13,7 @@ adb logcat -s FileHider:I      # matches and hook results only
 Values vary by Android version and ABI:
 
 ```text
-FileHider: onLoad: v3.0 abi=arm64-v8a bits=64 api=0x... env=0x...
+FileHider: onLoad: v3.1 abi=arm64-v8a bits=64 api=0x... env=0x...
 FileHider: com.example.detector: config=data bytes=58 rules=2
 FileHider: target=com.example.detector paths=2 [/system/build.prop, /system/xbin]
 FileHider: process=com.example.detector abi=arm64-v8a bits=64 bridge=none
@@ -30,7 +30,7 @@ FileHider: hooks active (inline/ShadowHook), 2 hidden path(s)
 ## Successful x86/x86_64 install
 
 ```text
-FileHider: onLoad: v3.0 abi=x86 bits=32 api=0x... env=0x...
+FileHider: onLoad: v3.1 abi=x86 bits=32 api=0x... env=0x...
 FileHider: process=com.example.detector abi=x86 bits=32 bridge=none
 FileHider: Dobby inline hooks installed: 19/24 (aliases=4 skipped=1)
 FileHider: subprocess hooks: popen=1 execve=1 execv=1 execvp=1

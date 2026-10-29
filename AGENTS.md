@@ -192,7 +192,7 @@ Important details:
 ## Module-list status
 
 The module-list description carries a boot-time capability prefix before the
-original description, for example `[✅ FileHider v3.0 · active · arm64]`.
+original description, for example `[✅ FileHider v3.1 · active · arm64]`.
 
 - `module/service.sh` is a **one-shot late-start reporter**, not a watcher or a
   native monitor daemon. `customize.sh` sets `LATESTARTSERVICE=true`, installs
@@ -208,7 +208,7 @@ original description, for example `[✅ FileHider v3.0 · active · arm64]`.
   present, and the device-ABI `zygisk/<abi>.so` exists; `no-zygisk` when no
   provider is detected; `not-working` for a disable marker, unknown ABI, missing
   ABI library, or another boot-check failure. The wording is
-  `[✅ FileHider v3.0 · active · arm64]`, `[❌ ... Zygisk not enabled]`, and
+  `[✅ FileHider v3.1 · active · arm64]`, `[❌ ... Zygisk not enabled]`, and
   `[❌ ... not working]`. Do not reintroduce pending/working states based on app
   activity.
 - Provider detection checks `$ZYGISK_ENABLED`, Magisk's built-in setting

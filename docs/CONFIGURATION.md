@@ -145,7 +145,7 @@ load the current logs again.
 The manager description carries a boot-time status prefix:
 
 ```text
-[✅ FileHider v3.0 · active · arm64] Per-app file and folder hiding ...
+[✅ FileHider v3.1 · active · arm64] Per-app file and folder hiding ...
 ```
 
 | Status | Meaning |
