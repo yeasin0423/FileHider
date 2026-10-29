@@ -2,6 +2,8 @@
 
 /* FileHider WebUI: settings actions, import/export, diagnostics, and force-stop. */
 
+  let diagnosticsEpoch = 0;
+
   // ---------- settings ----------
 
   function renderSettings() {
@@ -190,12 +192,25 @@
     syncOverlayLock();
   }
 
+  function clearDiagnosticsView() {
+    diagnosticsEpoch++;
+    state.uiLog.length = 0;
+    previousUiTail = "";
+    try { localStorage.removeItem(UI_LOG_PERSIST_KEY); } catch (_) {}
+    $("logOutput").textContent =
+      "Diagnostics cleared. Device logcat was not cleared.\n" +
+      "Tap Refresh to load current logs.";
+    $("logOutput").scrollTop = 0;
+    toast("Diagnostics cleared");
+  }
+
   function previousUiLogSection() {
     const text = previousUiLogText();
     return text ? "\n\n===== previous WebUI activity =====\n" + text : "";
   }
 
   async function refreshLogs() {
+    const epoch = ++diagnosticsEpoch;
     webLog("diag", "refresh requested");
     $("logOutput").textContent = "Loading diagnostics…";
     if (!hasBridge) {
@@ -223,6 +238,7 @@
       "/system/bin/logcat -d -s Zygisk 2>/dev/null | /system/bin/tail -n 40",
     ].join(" ; ");
     const result = await run(command);
+    if (epoch !== diagnosticsEpoch) return;
     let output = result.stdout.trim() || "(no output)";
     if (result.stderr.trim()) output += "\n\n[stderr]\n" + result.stderr.trim();
     output += "\n\n===== WebUI activity =====\n" + uiLogText() + previousUiLogSection();

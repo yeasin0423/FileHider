@@ -135,7 +135,10 @@ Diagnostics shows the config contents, ABI, module info, the last 250
 `FileHider` log lines, and a bounded WebUI activity log. Logs are
 oldest-to-newest and scroll to the newest line. **Copy** falls back to a hidden
 textarea on WebViews that block the clipboard API. **Save** writes
-`/data/media/0/Download/FileHider-diagnostics-<timestamp>.txt`.
+`/data/media/0/Download/FileHider-diagnostics-<timestamp>.txt`. The left back
+arrow is the only close control. **Clear** resets the displayed diagnostics and
+the WebUI activity log; it does not clear the device logcat. Tap **Refresh** to
+load the current logs again.
 
 ## Module-list status
 

@@ -152,7 +152,8 @@ offline and has no build step.
 - Session-cached file browser with symlink resolution
 - Auto/Dark/Light themes, accent color, and icon shape
 - Config export/import/reset with a `targets.conf.bak` backup
-- Diagnostics with recent `FileHider` logs and a bounded WebUI activity log
+- Diagnostics with recent `FileHider` logs, a bounded WebUI activity log, and a
+  safe **Clear** action
 
 Magisk has no module WebUI; edit the config file directly.
 

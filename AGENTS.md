@@ -274,6 +274,11 @@ original description, for example `[✅ FileHider v3.0 · active · arm64]`.
   the newest line at the bottom after every refresh and when first opened.
   `scrollLogsToBottom()` uses `scrollTop = scrollHeight` after layout; do not
   reverse the log order or add per-access hook noise.
+- The Diagnostics sheet has one close control: the left back arrow. Do not add
+  a duplicate `×` button. The **Clear** action resets only the displayed
+  diagnostics and the in-memory/persisted WebUI activity tail; it must not run
+  `logcat -c` or clear device logs. The placeholder must say that logcat was
+  not cleared and that **Refresh** reloads current logs.
 - Only the **home app list** restores its previous scroll position. Detail,
   settings, and help always start at the top. `showView()` saves home's position
   when leaving and restores it on return; opening or closing a sheet over the

@@ -258,11 +258,11 @@
       if (event.key === "Enter") { event.preventDefault(); loadBrowser($("jumpInput").value); }
     });
 
-    $("closeLogs").addEventListener("click", closeLogs);
     $("logsModal").addEventListener("click", (event) => {
       if (event.target === $("logsModal")) closeLogs();
     });
     $("refreshLogs").addEventListener("click", refreshLogs);
+    $("clearLogs").addEventListener("click", clearDiagnosticsView);
     $("copyLogs").addEventListener("click", async () => {
       const copied = await copyText($("logOutput").textContent, $("logOutput"));
       toast(copied ? "Copied" : "Long-press the selected text and choose Copy", !copied);
