@@ -192,7 +192,7 @@ Important details:
 ## Module-list status
 
 The module-list description carries a boot-time capability prefix before the
-original description, for example `[✅ FileHider v3.1 · active · arm64]`.
+original description, for example `[✅ FileHider v3.2 · active · arm64]`.
 
 - `module/service.sh` is a **one-shot late-start reporter**, not a watcher or a
   native monitor daemon. `customize.sh` sets `LATESTARTSERVICE=true`, installs
@@ -208,7 +208,7 @@ original description, for example `[✅ FileHider v3.1 · active · arm64]`.
   present, and the device-ABI `zygisk/<abi>.so` exists; `no-zygisk` when no
   provider is detected; `not-working` for a disable marker, unknown ABI, missing
   ABI library, or another boot-check failure. The wording is
-  `[✅ FileHider v3.1 · active · arm64]`, `[❌ ... Zygisk not enabled]`, and
+  `[✅ FileHider v3.2 · active · arm64]`, `[❌ ... Zygisk not enabled]`, and
   `[❌ ... not working]`. Do not reintroduce pending/working states based on app
   activity.
 - Provider detection checks `$ZYGISK_ENABLED`, Magisk's built-in setting
@@ -270,15 +270,14 @@ original description, for example `[✅ FileHider v3.1 · active · arm64]`.
   Escape, the backdrop, and the cancel button do the same. Focus starts on
   **Keep editing/Cancel**, and the dialog resolves a promise rather than
   blocking the page.
-- The Diagnostics logbox stays chronological (oldest first) and must scroll to
+- The Logs logbox stays chronological (oldest first) and must scroll to
   the newest line at the bottom after every refresh and when first opened.
   `scrollLogsToBottom()` uses `scrollTop = scrollHeight` after layout; do not
   reverse the log order or add per-access hook noise.
-- The Diagnostics sheet has one close control: the left back arrow. Do not add
-  a duplicate `×` button. The **Clear** action resets only the displayed
-  diagnostics and the in-memory/persisted WebUI activity tail; it must not run
-  `logcat -c` or clear device logs. The placeholder must say that logcat was
-  not cleared and that **Refresh** reloads current logs.
+- The Logs sheet has one close control: the left back arrow. Do not add a
+  duplicate `×` button or a Clear action. The sheet is read-only apart from
+  **Copy**, **Save**, and **Refresh**; do not run `logcat -c` or erase device
+  logs from it.
 - Only the **home app list** restores its previous scroll position. Detail,
   settings, and help always start at the top. `showView()` saves home's position
   when leaving and restores it on return; opening or closing a sheet over the
@@ -318,10 +317,10 @@ original description, for example `[✅ FileHider v3.1 · active · arm64]`.
   `state.presetOpen`, reset that set when opening a different app, and preserve
   it across `renderDetail()` calls so editing does not collapse the group. Do
   not silently add broad system directories.
-- Settings and help are full views; diagnostics remains a sheet. Settings
+- Settings and help are full views; the Logs sheet remains a sheet. Settings
   includes Auto/Dark/Light CSS-only theming, accent choice, app icon shape
   (Circle default, Squircle, Rounded), system-app visibility, config
-  copy/export/import/reload, reset with `targets.conf.bak`, and diagnostics.
+  copy/export/import/reload, reset with `targets.conf.bak`, and logs.
   Export writes `/data/media/0/Download/FileHider-targets-<timestamp>.conf` and
   verifies the byte count; import accepts pasted text or an Android file-picker
   file. Do not claim Monet support.
@@ -397,20 +396,20 @@ original description, for example `[✅ FileHider v3.1 · active · arm64]`.
   so the user knows every name hidden by native expansion.
 - Do not hardcode arbitrary symlink targets in the browser. Resolve them from
   the filesystem (`pwd -P`, `readlink -f` with a plain fallback).
-- The Diagnostics **Copy** button tries `navigator.clipboard`, then a hidden
+- The Logs **Copy** button tries `navigator.clipboard`, then a hidden
   textarea plus `document.execCommand("copy")`. If both fail it selects the log
   text so the long-press menu can copy it. Keep `-webkit-user-select: text` on
   `.logbox`; Bliss OS blocks the clipboard API.
-- The Diagnostics **Save** button writes the displayed log to
-  `/data/media/0/Download/FileHider-diagnostics-<timestamp>.txt` using
-  `base64 -d`, `chmod 0644`, and a byte-count check. If the write fails or there
-  is no bridge, fall back to clipboard copy. Do not save a partial or
-  still-loading log; refresh first when the logbox shows `Loading diagnostics…`.
-- The three-dot menu carries show-system-apps, help, diagnostics, settings, and
-  reload. Settings has its own reset/import/export controls; do not bury them in
-  the menu.
+- The Logs **Save** button writes the displayed log to
+  `/data/media/0/Download/FileHider-logs-<timestamp>.txt` using `base64 -d`,
+  `chmod 0644`, and a byte-count check. If the write fails or there is no
+  bridge, fall back to clipboard copy. Do not save a partial or still-loading
+  log; refresh first when the logbox shows `Loading logs…`.
+- The three-dot menu carries show-system-apps, help, logs, settings, and reload.
+  Settings has its own reset/import/export controls; do not bury them in the
+  menu.
 
-## Diagnostics (do not remove)
+## Logs (do not remove)
 
 Logging is a feature of this module. The user tests on-device and needs to send
 back actionable logs. Keep these, and extend them when adding behavior:
@@ -477,7 +476,7 @@ back actionable logs. Keep these, and extend them when adding behavior:
   diagnostics.
 
 Log tags are all `FileHider`. `adb logcat -s FileHider` shows everything;
-`:I` filters to matches/results. The WebUI's **Diagnostics** sheet captures
+`:I` filters to matches/results. The WebUI's **Logs** sheet captures
 `module.prop`, ABI, module/config listings, the config contents, the last 250
 log lines, and the bounded WebUI activity log, and can force-stop configured
 apps. Keep `webLog()` coverage for navigation, app reloads (source/count/diff),
@@ -485,7 +484,7 @@ config load/save/import/export, browser loads, and JavaScript errors. The WebUI
 log stays in memory; do not write per-access hook noise into it. A bounded tail
 of `nav`, `ui`, `theme`, `error`, and `webui` lines is also kept in
 `localStorage` under `fh.uiTail`; startup moves the previous tail into memory
-and clears the key, and Diagnostics shows it as **previous WebUI activity**.
+and clears the key, and Logs shows it as **previous WebUI activity**.
 This is deliberate so a WebUI close (for example a failed hardware-back guard)
 does not erase the evidence.
 
@@ -507,7 +506,11 @@ The zip must contain exactly the expected files (no `targets.conf`, no
 `service.sh`, all four `zygisk/*.so`, and the complete `webroot/index.html` +
 `webroot/assets/css/*.css` + `webroot/assets/js/*.js` tree. Verify `service.sh`
 is executable in the staged/zip tree. `./scripts/test.sh` runs both the host
-matcher test and `tests/status_test.sh`. For each `.so`, verify:
+matcher test and `tests/status_test.sh`. GitHub Actions uses
+`actions/upload-artifact@v7` with `archive: false` and uploads only
+`dist/FileHider-<version>.zip`: the downloaded artifact must be the installable
+module zip itself, with no wrapper zip and no `SHA256SUMS`. Print the checksum
+in the workflow log. For each `.so`, verify:
 
 ```bash
 NDK=.toolchain/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin

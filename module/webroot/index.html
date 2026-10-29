@@ -7,14 +7,14 @@
 <meta name="theme-color" content="#070b10">
 <link rel="icon" href="data:,">
 <title>File Hider</title>
-<link rel="stylesheet" href="assets/css/00-tokens.css?v=3.1">
-<link rel="stylesheet" href="assets/css/01-base.css?v=3.1">
-<link rel="stylesheet" href="assets/css/02-topbar.css?v=3.1">
-<link rel="stylesheet" href="assets/css/03-layout.css?v=3.1">
-<link rel="stylesheet" href="assets/css/04-detail.css?v=3.1">
-<link rel="stylesheet" href="assets/css/05-settings-help.css?v=3.1">
-<link rel="stylesheet" href="assets/css/06-sheets.css?v=3.1">
-<link rel="stylesheet" href="assets/css/07-responsive.css?v=3.1">
+<link rel="stylesheet" href="assets/css/00-tokens.css?v=3.2">
+<link rel="stylesheet" href="assets/css/01-base.css?v=3.2">
+<link rel="stylesheet" href="assets/css/02-topbar.css?v=3.2">
+<link rel="stylesheet" href="assets/css/03-layout.css?v=3.2">
+<link rel="stylesheet" href="assets/css/04-detail.css?v=3.2">
+<link rel="stylesheet" href="assets/css/05-settings-help.css?v=3.2">
+<link rel="stylesheet" href="assets/css/06-sheets.css?v=3.2">
+<link rel="stylesheet" href="assets/css/07-responsive.css?v=3.2">
 </head>
 <body>
 <header class="topbar">
@@ -40,7 +40,7 @@
         <button id="menuSystem" type="button" data-menu="system" role="menuitemcheckbox" aria-checked="false"><span class="menu-check" id="menuSystemCheck">✓</span><span>Show system apps</span></button>
         <div class="sep"></div>
         <button type="button" data-menu="help" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.4 2.4 0 1 1 3.6 2.1c-.8.5-1.3 1-1.3 2"/><path d="M12 17h.01"/></svg><span>Help &amp; setup</span></button>
-        <button type="button" data-menu="logs" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><path d="M5 6h14M5 10h14M5 14h9M5 18h6"/></svg><span>Diagnostics</span></button>
+        <button type="button" data-menu="logs" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><path d="M5 6h14M5 10h14M5 14h9M5 18h6"/></svg><span>Logs</span></button>
         <button type="button" data-menu="settings" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14.2 3h-4.4l-.4 2.5a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2l.4 2.5h4.4l.4-2.5a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg><span>Settings</span></button>
         <div class="sep"></div>
         <button type="button" data-menu="reload" role="menuitem"><svg class="icon sm" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 6.7"/><path d="M20 5v6h-6"/></svg><span>Reload apps &amp; rules</span></button>
@@ -218,7 +218,7 @@
     </section>
 
     <section class="card settings-section">
-      <h3>Diagnostics</h3>
+      <h3>Logs</h3>
       <div class="setting-row">
         <div class="setting-copy"><b>On-device logs</b><span>Config, ABI, module files, and the latest FileHider log lines.</span></div>
         <button id="settingsLogs" class="btn small" type="button">Open</button>
@@ -273,9 +273,9 @@
 
     <section class="card help-section">
       <h3><span class="step-num">4</span> Verify</h3>
-      <p>Save the rule, force-stop the app, then open it again. Open <b>Diagnostics</b> and look for <span class="mono">target=</span>, <span class="mono">hooks active</span>, and <span class="mono">first blocked path</span>. If the app still sees the path, it may use a raw syscall, a shell command that builds the path internally, or an unlisted alias.</p>
+      <p>Save the rule, force-stop the app, then open it again. Open <b>Logs</b> and look for <span class="mono">target=</span>, <span class="mono">hooks active</span>, and <span class="mono">first blocked path</span>. If the app still sees the path, it may use a raw syscall, a shell command that builds the path internally, or an unlisted alias.</p>
       <div class="help-actions">
-        <button class="btn small" type="button" data-open-logs>Open diagnostics</button>
+        <button class="btn small" type="button" data-open-logs>Open logs</button>
         <button class="btn small" type="button" data-open-settings>Open settings</button>
       </div>
     </section>
@@ -329,17 +329,16 @@
   </div>
 </div>
 
-<div id="logsModal" class="modal" role="dialog" aria-modal="true" aria-label="Diagnostics">
+<div id="logsModal" class="modal" role="dialog" aria-modal="true" aria-label="Logs">
   <div class="sheet">
     <div class="sheet-head">
-      <button class="icon-btn sheet-back" type="button" data-sheet-back="logs" aria-label="Close diagnostics" title="Close">
+      <button class="icon-btn sheet-back" type="button" data-sheet-back="logs" aria-label="Close logs" title="Close">
         <svg class="icon sm" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
       </button>
-      <div class="title">Diagnostics</div>
+      <div class="title">Logs</div>
       <div class="head-actions">
         <button id="copyLogs" class="btn small" type="button">Copy</button>
         <button id="saveLogs" class="btn small" type="button" aria-label="Save logs to Downloads" title="Save logs to Downloads">Save</button>
-        <button id="clearLogs" class="btn small" type="button" aria-label="Clear diagnostics panel and WebUI activity" title="Clear diagnostics panel and WebUI activity (device logcat is not cleared)">Clear</button>
       </div>
     </div>
     <pre id="logOutput" class="logbox">Loading…</pre>
@@ -396,15 +395,15 @@
 <div id="toast" role="status" aria-live="polite"></div>
 
 
-<script src="assets/js/00-bootstrap.js?v=3.1" defer></script>
-<script src="assets/js/10-utils.js?v=3.1" defer></script>
-<script src="assets/js/20-config.js?v=3.1" defer></script>
-<script src="assets/js/30-navigation.js?v=3.1" defer></script>
-<script src="assets/js/40-apps.js?v=3.1" defer></script>
-<script src="assets/js/50-detail.js?v=3.1" defer></script>
-<script src="assets/js/60-browser.js?v=3.1" defer></script>
-<script src="assets/js/70-settings.js?v=3.1" defer></script>
-<script src="assets/js/80-events.js?v=3.1" defer></script>
-<script src="assets/js/90-main.js?v=3.1" defer></script>
+<script src="assets/js/00-bootstrap.js?v=3.2" defer></script>
+<script src="assets/js/10-utils.js?v=3.2" defer></script>
+<script src="assets/js/20-config.js?v=3.2" defer></script>
+<script src="assets/js/30-navigation.js?v=3.2" defer></script>
+<script src="assets/js/40-apps.js?v=3.2" defer></script>
+<script src="assets/js/50-detail.js?v=3.2" defer></script>
+<script src="assets/js/60-browser.js?v=3.2" defer></script>
+<script src="assets/js/70-settings.js?v=3.2" defer></script>
+<script src="assets/js/80-events.js?v=3.2" defer></script>
+<script src="assets/js/90-main.js?v=3.2" defer></script>
 </body>
 </html>

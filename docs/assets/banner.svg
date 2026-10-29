@@ -40,6 +40,6 @@
   <g transform="translate(952 92)">
     <rect width="166" height="76" rx="20" fill="#0d2528" stroke="#24504a"/>
     <text x="83" y="31" text-anchor="middle" fill="#8ef0c6" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="1.4">VERSION</text>
-    <text x="83" y="59" text-anchor="middle" fill="#f4fbf8" font-family="'Segoe UI', 'SF Pro Display', Arial, sans-serif" font-size="28" font-weight="700">v3.1</text>
+    <text x="83" y="59" text-anchor="middle" fill="#f4fbf8" font-family="'Segoe UI', 'SF Pro Display', Arial, sans-serif" font-size="28" font-weight="700">v3.2</text>
   </g>
 </svg>

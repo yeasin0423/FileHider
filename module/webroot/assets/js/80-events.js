@@ -262,12 +262,11 @@
       if (event.target === $("logsModal")) closeLogs();
     });
     $("refreshLogs").addEventListener("click", refreshLogs);
-    $("clearLogs").addEventListener("click", clearDiagnosticsView);
     $("copyLogs").addEventListener("click", async () => {
       const copied = await copyText($("logOutput").textContent, $("logOutput"));
       toast(copied ? "Copied" : "Long-press the selected text and choose Copy", !copied);
     });
-    $("saveLogs").addEventListener("click", saveDiagnosticsFile);
+    $("saveLogs").addEventListener("click", saveLogsFile);
     $("stopTargets").addEventListener("click", stopConfiguredApps);
 
     $("importCancel").addEventListener("click", closeImport);

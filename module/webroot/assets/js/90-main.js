@@ -13,7 +13,7 @@
     bindEvents();
     initNavigation();
     showView("home");
-    webLog("webui", "start asset=3.1 bridge=" + (hasBridge ? "yes" : "no") +
+    webLog("webui", "start asset=3.2 bridge=" + (hasBridge ? "yes" : "no") +
       " theme=" + prefs.theme + " accent=" + prefs.accent +
       " iconShape=" + prefs.iconShape + " showSystem=" + prefs.showSystem);
 

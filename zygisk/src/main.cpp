@@ -16,7 +16,7 @@
 #include "zygisk.hpp"
 
 #define LOG_TAG "FileHider"
-#define FH_VERSION "v3.1"
+#define FH_VERSION "v3.2"
 #include <android/log.h>
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)

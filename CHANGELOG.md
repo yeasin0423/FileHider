@@ -3,6 +3,22 @@
 All notable changes to FileHider are recorded here. The module version comes
 from [`module/module.prop`](module/module.prop).
 
+## v3.2 — 2026-10-29
+
+### Changed
+
+- Renamed the Diagnostics sheet to **Logs** and removed the Clear action.
+  **Copy**, **Save**, and **Refresh** remain; the sheet does not erase device
+  logcat.
+- Saved log files are now named `FileHider-logs-<timestamp>.txt`.
+- GitHub Actions now uploads the installable module zip directly as a
+  single-file artifact, with no wrapper zip or uploaded `SHA256SUMS`. The
+  SHA-256 is printed in the workflow log.
+- Bumped the module and WebUI asset version to `v3.2`.
+
+`v3.2` is a WebUI and packaging cleanup release. Native hook behavior and the
+config format are unchanged from `v3.1`.
+
 ## v3.1 — 2026-10-29
 
 ### Changed

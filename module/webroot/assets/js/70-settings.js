@@ -1,8 +1,6 @@
 "use strict";
 
-/* FileHider WebUI: settings actions, import/export, diagnostics, and force-stop. */
-
-  let diagnosticsEpoch = 0;
+/* FileHider WebUI: settings actions, import/export, logs, and force-stop. */
 
   // ---------- settings ----------
 
@@ -192,27 +190,14 @@
     syncOverlayLock();
   }
 
-  function clearDiagnosticsView() {
-    diagnosticsEpoch++;
-    state.uiLog.length = 0;
-    previousUiTail = "";
-    try { localStorage.removeItem(UI_LOG_PERSIST_KEY); } catch (_) {}
-    $("logOutput").textContent =
-      "Diagnostics cleared. Device logcat was not cleared.\n" +
-      "Tap Refresh to load current logs.";
-    $("logOutput").scrollTop = 0;
-    toast("Diagnostics cleared");
-  }
-
   function previousUiLogSection() {
     const text = previousUiLogText();
     return text ? "\n\n===== previous WebUI activity =====\n" + text : "";
   }
 
   async function refreshLogs() {
-    const epoch = ++diagnosticsEpoch;
     webLog("diag", "refresh requested");
-    $("logOutput").textContent = "Loading diagnostics…";
+    $("logOutput").textContent = "Loading logs…";
     if (!hasBridge) {
       $("logOutput").textContent =
         "No shell bridge. Open this page from KernelSU or APatch.\n\n" +
@@ -238,7 +223,6 @@
       "/system/bin/logcat -d -s Zygisk 2>/dev/null | /system/bin/tail -n 40",
     ].join(" ; ");
     const result = await run(command);
-    if (epoch !== diagnosticsEpoch) return;
     let output = result.stdout.trim() || "(no output)";
     if (result.stderr.trim()) output += "\n\n[stderr]\n" + result.stderr.trim();
     output += "\n\n===== WebUI activity =====\n" + uiLogText() + previousUiLogSection();
@@ -247,14 +231,14 @@
     webLog("diag", "refresh complete output=" + output.length + " chars");
   }
 
-  async function saveDiagnosticsFile() {
+  async function saveLogsFile() {
     let text = $("logOutput").textContent || "";
-    if (!text.trim() || text.startsWith("Loading diagnostics")) {
+    if (!text.trim() || text.startsWith("Loading logs")) {
       await refreshLogs();
       text = $("logOutput").textContent || "";
     }
     if (!text.trim()) {
-      toast("No diagnostics to save", true);
+      toast("No logs to save", true);
       return;
     }
 
@@ -262,7 +246,7 @@
     if (!hasBridge) {
       const copied = await copyText(text);
       webLog("diag", "save without bridge; clipboard=" + copied);
-      toast(copied ? "No shell bridge — diagnostics copied instead" : "Could not save or copy diagnostics", !copied);
+      toast(copied ? "No shell bridge — logs copied instead" : "Could not save or copy logs", !copied);
       return;
     }
 
@@ -271,7 +255,7 @@
     webLog("diag", "save requested bytes=" + expectedBytes);
     try {
       const dir = "/data/media/0/Download";
-      const name = "FileHider-diagnostics-" + exportStamp() + ".txt";
+      const name = "FileHider-logs-" + exportStamp() + ".txt";
       const file = dir + "/" + name;
       const command = [
         "/system/bin/mkdir -p " + q(dir),
@@ -290,9 +274,9 @@
         return;
       }
 
-      webLog("error", "diagnostics save failed: " + (result.stderr || result.stdout || "write failed"));
+      webLog("error", "logs save failed: " + (result.stderr || result.stdout || "write failed"));
       const copied = await copyText(text);
-      toast(copied ? "Save failed — diagnostics copied instead" : "Could not save diagnostics", true);
+      toast(copied ? "Save failed — logs copied instead" : "Could not save logs", true);
     } finally {
       if (button) button.disabled = false;
     }

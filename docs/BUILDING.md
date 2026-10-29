@@ -32,14 +32,14 @@ pip3 install --user cmake ninja
 The output is:
 
 ```text
-dist/FileHider-v3.1.zip
+dist/FileHider-v3.2.zip
 ```
 
 `scripts/build.sh` runs `scripts/verify.sh` automatically. To verify an
 existing archive directly:
 
 ```bash
-./scripts/verify.sh dist/FileHider-v3.1.zip
+./scripts/verify.sh dist/FileHider-v3.2.zip
 ```
 
 The verifier checks:
@@ -98,15 +98,16 @@ The workflow at `.github/workflows/build.yml` runs on:
 - manual dispatch
 
 It runs the host tests, restores or downloads the pinned NDK, builds all four
-ABIs, verifies the package, and uploads a workflow artifact containing:
+ABIs, verifies the package, and uploads the installable module zip directly as
+a single-file artifact:
 
 ```text
-FileHider-v3.1.zip
-SHA256SUMS
+FileHider-v3.2.zip
 ```
 
-The workflow does **not** create GitHub releases. Download the artifact from
-the Actions run and publish the release manually.
+There is no wrapper zip and no uploaded `SHA256SUMS`; the SHA-256 is printed in
+the workflow log. The workflow does **not** create GitHub releases. Download
+the artifact from the Actions run and publish the release manually.
 
 ## Reproducibility and checks
 
@@ -119,9 +120,9 @@ SHA1 5107f898313790e449e87eee2183d9a20602dee9
 To inspect the final archive manually:
 
 ```bash
-unzip -l dist/FileHider-v3.1.zip
-unzip -Z -l dist/FileHider-v3.1.zip | grep service.sh
-sha256sum dist/FileHider-v3.1.zip
+unzip -l dist/FileHider-v3.2.zip
+unzip -Z -l dist/FileHider-v3.2.zip | grep service.sh
+sha256sum dist/FileHider-v3.2.zip
 ```
 
 ## Clean

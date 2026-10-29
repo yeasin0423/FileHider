@@ -1,4 +1,4 @@
-/* FileHider WebUI: sheets, file browser, diagnostics, and toast. */
+/* FileHider WebUI: sheets, file browser, logs, and toast. */
   .modal {
     position: fixed; inset: 0; z-index: 70; background: var(--modal-backdrop);
     display: none; align-items: flex-end; justify-content: center;

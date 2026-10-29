@@ -12,9 +12,6 @@
     .pill { padding: 6px 8px; font-size: 11px; }
     .top-actions { gap: 6px; }
     .icon-btn { width: 37px; height: 37px; }
-    .sheet-head { gap: 6px; }
-    .sheet-head .head-actions { gap: 5px; }
-    .sheet-head .head-actions .btn.small { padding: 8px 9px; font-size: 12px; }
     .app-shell { padding-left: 11px; padding-right: 11px; }
     .app-row { padding: 9px 9px; gap: 9px; border-radius: 16px; }
     .avatar { width: 43px; height: 43px; }

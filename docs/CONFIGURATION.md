@@ -122,30 +122,29 @@ Settings includes:
 - show/hide system apps
 - config copy, export, import, and reload
 - reset all rules with a `targets.conf.bak` backup
-- diagnostics
+- logs
 
 Export writes
 `/data/media/0/Download/FileHider-targets-<timestamp>.conf`. Import accepts
 pasted text or a file from the Android picker. Saves use a temporary file and a
 byte-count check before replacing the config atomically.
 
-### Diagnostics
+### Logs
 
-Diagnostics shows the config contents, ABI, module info, the last 250
+The **Logs** sheet shows the config contents, ABI, module info, the last 250
 `FileHider` log lines, and a bounded WebUI activity log. Logs are
 oldest-to-newest and scroll to the newest line. **Copy** falls back to a hidden
 textarea on WebViews that block the clipboard API. **Save** writes
-`/data/media/0/Download/FileHider-diagnostics-<timestamp>.txt`. The left back
-arrow is the only close control. **Clear** resets the displayed diagnostics and
-the WebUI activity log; it does not clear the device logcat. Tap **Refresh** to
-load the current logs again.
+`/data/media/0/Download/FileHider-logs-<timestamp>.txt`. The left back arrow is
+the only close control. The sheet does not erase device logcat; tap **Refresh**
+to load the current logs again.
 
 ## Module-list status
 
 The manager description carries a boot-time status prefix:
 
 ```text
-[✅ FileHider v3.1 · active · arm64] Per-app file and folder hiding ...
+[✅ FileHider v3.2 · active · arm64] Per-app file and folder hiding ...
 ```
 
 | Status | Meaning |

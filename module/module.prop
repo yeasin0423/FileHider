@@ -1,6 +1,6 @@
 id=filehider
 name=File Hider
-version=v3.1
-versionCode=31
+version=v3.2
+versionCode=32
 author=yeasin
 description=Per-app file and folder hiding for Java, native, and listing-based detection (Zygisk).

@@ -67,7 +67,7 @@ paths as missing. Other apps do not.
 ## Quick start
 
 1. Download the [latest release](https://github.com/yeasin0423/FileHider/releases/latest).
-2. Flash `FileHider-v3.1.zip` in Magisk, KernelSU, or APatch.
+2. Flash `FileHider-v3.2.zip` in Magisk, KernelSU, or APatch.
 3. Reboot once so Zygisk loads the module.
 4. Open the module WebUI (KernelSU/APatch) or edit
    `/data/adb/filehider/targets.conf` on Magisk.
@@ -152,8 +152,7 @@ offline and has no build step.
 - Session-cached file browser with symlink resolution
 - Auto/Dark/Light themes, accent color, and icon shape
 - Config export/import/reset with a `targets.conf.bak` backup
-- Diagnostics with recent `FileHider` logs, a bounded WebUI activity log, and a
-  safe **Clear** action
+- Logs with recent `FileHider` output and a bounded WebUI activity log
 
 Magisk has no module WebUI; edit the config file directly.
 
@@ -164,8 +163,8 @@ Magisk has no module WebUI; edit the config file directly.
 - `targets.conf` is intentionally **not** in the zip. Your rules live outside
   the module directory and survive updates.
 - The module description shows a boot-time status such as
-  `[✅ FileHider v3.1 · active · arm64]` or
-  `[❌ FileHider v3.1 · Zygisk not enabled]`.
+  `[✅ FileHider v3.2 · active · arm64]` or
+  `[❌ FileHider v3.2 · Zygisk not enabled]`.
 - If the manager caches the module page, leave and reopen it after boot.
 
 ## Build from source
@@ -181,19 +180,20 @@ No Android Studio or Gradle is needed.
 Output:
 
 ```text
-dist/FileHider-v3.1.zip
+dist/FileHider-v3.2.zip
 ```
 
 Every build runs `scripts/verify.sh`, which checks the zip contents, all four
 libraries, the exported Zygisk entry point, arm64 16 KB alignment, and the
 executable bit on `service.sh`. GitHub Actions runs the same tests and build,
-then uploads the zip plus `SHA256SUMS` as a workflow artifact. Releases are
+then uploads the installable module zip directly as a workflow artifact, with
+no wrapper archive. The SHA-256 is printed in the workflow log. Releases are
 created manually from that artifact.
 
 See [Building](docs/BUILDING.md) for dependencies, overrides, and release
 details, and [CHANGELOG.md](CHANGELOG.md) for release notes.
 
-## Diagnostics
+## Logs
 
 ```bash
 adb logcat -s FileHider        # everything
@@ -211,7 +211,7 @@ FileHider: status working target=com.example.detector abi=arm64-v8a engine=inlin
 ```
 
 Read [Troubleshooting](docs/TROUBLESHOOTING.md) for the full log flow, fallback
-messages, and a failure table. Use the WebUI's **Diagnostics** sheet when
+messages, and a failure table. Use the WebUI's **Logs** sheet when
 reporting an issue.
 
 ## Limitations
